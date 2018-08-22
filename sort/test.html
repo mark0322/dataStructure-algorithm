@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+</body>
+</html>
+<script type="text/javascript">
+const log = console.log
+
+function quickSort(arr = []) {
+  if (arr.length <= 1) { return arr }
+
+  const
+    midIndex = arr.length / 2 | 0,
+    midValue = arr.splice(midIndex, 1)[0],
+    left = [],
+    right = [];
+  
+  for (const item of arr) {
+    item < midValue
+      ? left.push(item)
+      : right.push(item);
+  }
+
+  return [...quickSort(left), midValue, ...quickSort(right)];
+}
+
+log(quickSort([5,9,1,5,3,4,5,6,1,2,3,444,66,23,7,0]))
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

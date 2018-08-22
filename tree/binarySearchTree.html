@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+</body>
+</html>
+<script type="text/javascript">
+const log = console.log
+
+class Node {
+  constructor(key) {
+    this.key = key;
+    this.right = null;
+    this.left = null;   
+  }
+}
+
+class BinarySearchTree {
+  constructor() {
+    this.root = null;
+  }
+
+  /** 向二叉树中插入节点 
+   * @param {Number} key
+  */
+  insert(key) {
+    const newNode = new Node(key);
+
+    this.root
+      ? insertNode(this.root, newNode) // 根节点已存时
+      : this.root = newNode; // 根节点为空时
+
+    /** 执行 插入节点 行为的私有函数 
+     * @param {Object} node 二叉树中的节点
+     * @param {Object} newNode Node实例化后，要插入二叉树中的节点
+     * @api private
+    */
+    function insertNode(node, newNode) {
+      if (node.key > newNode.key) {
+        node.left
+          ? insertNode(node.left, newNode)
+          : node.left = newNode;
+      } else {
+        node.right
+          ? insertNode(node.right, newNode)
+          : node.right = newNode;
+      }
+    }
+  }
+
+
+  /** 中序遍历 
+   * @param {Function} callback 定义对遍历到的每个节点要进行的操作(Visitor pattern)
+  */
+  inOrderTraverse(callback) {
+    inOrderTraverseNode(this.root, callback);
+
+
+    /** 中序遍历的核心代码 (通过递归，从小到大遍历二叉树)
+     * @param {Object} node 节点
+     * @param {Function} callback 定义对遍历到的每个节点要进行的操作(Visitor pattern)
+     * @api private
+    */
+    function inOrderTraverseNode(node, callback) {
+      if (node !== null) {
+        inOrderTraverseNode(node.left, callback);
+        callback(node.key);
+        inOrderTraverseNode(node.right, callback);
+      }
+    }
+  }
+
+  /** 先序遍历 以优先于后代节点的顺序访问每个节点（遍历顺序为依次向下）
+   * 应用：打印一个结构化的文档
+   * @param {Function} callback 定义对遍历到的每个节点要进行的操作(Visitor pattern)
+  */
+  preOrderTraverse(callback) {
+    preOrderTraverseNode(this.root, callback);
+
+
+    /**
+     * @api private
+    */
+    function preOrderTraverseNode(node, callback) {
+      if (node !== null) {
+        callback(node.key);
+        preOrderTraverseNode(node.left, callback);
+        preOrderTraverseNode(node.right, callback);
+      }
+    }
+  }
+
+  /** 后序遍历 由下(最小值)，再遍历最小值左侧的值，依次向上。
+   * @param {Function} callback 定义对遍历到的每个节点要进行的操作(Visitor pattern)
+  */
+  postOrderTraverse(callback) {
+    postOrderTraverseNode(this.root, callback);
+
+    function postOrderTraverseNode(node, callback) {
+      if (node !== null) {
+        postOrderTraverseNode(node.left, callback);
+        postOrderTraverseNode(node.right, callback);
+        callback(node.key);
+      }
+    }
+  }
+
+  /**
+   * @return {Number} 二叉树中的最大值
+  */
+  max() {
+    let node = this.root || {};
+    while (node.right) {
+      node = node.right;
+    }
+    return node.key;
+  }
+
+  /**
+   * @return {Number} 二叉树中的最小值
+  */
+  min() {
+    let node = this.root || {};
+    while (node.left) {
+      node = node.left;
+    }
+    return node.key;
+  }
+
+  /** 判断二叉树中是否存在某个值
+   * @param {Number} key
+   * @return {Boolean}
+  */
+  search(key) {
+    return searchNode(this.root, key);
+
+    /**
+     * @return {Boolean}
+     * @api private
+    */
+    function searchNode(node, key) {
+      if (!node) { return false }
+      if (node.key === key) { return true }
+      if (node.key > key) {
+        return searchNode(node.left, key);
+      }
+      if (node.key < key) {
+        return searchNode(node.right, key);
+      }
+    }
+  }
+
+}
+
+
+let tree = new BinarySearchTree()
+
+tree.insert(11)
+tree.insert(7)
+tree.insert(15)
+tree.insert(5)
+tree.insert(6)
+tree.insert(3)
+tree.insert(9)
+tree.insert(8)
+tree.insert(10)
+tree.insert(13)
+tree.insert(12)
+tree.insert(14)
+tree.insert(20)
+tree.insert(18)
+tree.insert(25)
+
+// tree.postOrderTraverse(val => log(val, 'preOrderTraverse'))
+
+
+log(tree, tree.search(118))
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
