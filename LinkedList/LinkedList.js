@@ -1,14 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
-</body>
-</html>
-<script type="text/javascript">
-const log = console.log
-
 class Node {
   constructor(element) {
     this.element = element;
@@ -16,10 +5,13 @@ class Node {
   }
 }
 
+let head = Symbol('head');
+let length = Symbol('length');
+
 class LinkedList {
   constructor() {
-    this.length = 0;
-    this.head = null;
+    this[length] = 0;
+    this[head] = null;
   }
 
   /** 向列表尾部添加元素*/
@@ -27,10 +19,10 @@ class LinkedList {
     const node = new Node(element);
     let current = null;
 
-    if (!this.head) {
-      this.head = node;
+    if (!this[head]) {
+      this[head] = node;
     } else {
-      current = this.head;
+      current = this[head];
 
       // 找到最末尾的元素
       while (current.next) {
@@ -39,7 +31,7 @@ class LinkedList {
       current.next = node;
     }
 
-    this.length++;
+    this[length]++;
   }
 
   /** 向特定位置插入元素
@@ -49,18 +41,16 @@ class LinkedList {
    */
   insert(position, element) {
     const node = new Node(element);
-    let current = this.head,
+    let current = this[head],
       previous = null;
 
     const isValidPosition =
-      (typeof position === 'number') && (position >= 0) && (position < this.length);
-    if (!isValidPosition) {
-      return false
-    }
+      (typeof position === 'number') && (position >= 0) && (position < this[length]);
+    if (!isValidPosition) { return false }
 
     if (position === 0) {
       node.next = current;
-      this.head = node;
+      this[head] = node;
     } else {
       for (let i = 0; i < position; i++) {
         previous = current;
@@ -70,7 +60,7 @@ class LinkedList {
       node.next = current;
       previous.next = node;
     }
-    this.length++;
+    this[length]++;
     return true;
   }
 
@@ -78,12 +68,12 @@ class LinkedList {
    * @return 移除成功时，返回被移除的元素
    */
   remove(element) {
-    let current = this.head,
+    let current = this[head],
       previous = null;
 
-    if (this.head.element === element) {
-      this.head = current.next;
-      this.length--;
+    if (this[head].element === element) {
+      this[head] = current.next;
+      this[length]--;
       return current.element;
     }
 
@@ -93,7 +83,7 @@ class LinkedList {
 
       if (current.element === element) {
         previous.next = current.next;
-        this.length--;
+        this[length]--;
         return current.element;
       }
     }
@@ -106,14 +96,16 @@ class LinkedList {
    */
   removeAt(position) {
     const isValidPosition =
-      (typeof position === 'number') && (position >= 0) && (position < this.length);
+      (typeof position === 'number') && (position >= 0) && (position < this[length]);
+
+    if (!isValidPosition) { return null }
 
     if (isValidPosition) {
-      let current = this.head,
+      let current = this[head],
         previous = null;
 
       if (position === 0) {
-        this.head = current.next;
+        this[head] = current.next;
       } else {
         for (let i = 0; i < position; i++) {
           previous = current;
@@ -123,71 +115,54 @@ class LinkedList {
         // 将 current node 从链表 链中移除
         previous.next = current.next;
       }
-      this.length--;
+      this[length]--;
       return current.element;
     }
+  }
 
-    if (!isValidPosition) {
-      return null
+  /** 类似 Array.prototype.join*/
+  join(sign = '-') {
+    let current = this[head],
+      result = '';
+
+    while (current) {
+      result += current.element + (current.next ? sign : '');
+      current = current.next;
     }
+
+    return result;
   }
 
   /** 返回元素在列表中的索引；若无改元素，返回 -1
-   * 
+   * @return {Number} 相当于链表的下标 index
    */
   indexOf(element) {
-
+    let current = this[head],
+      index = 0;
+    while (current) {
+      if (current.element === element) {
+        return index;
+      }
+      current = current.next;
+      index++;
+    }
+    return -1;
   }
 
-  /** 检查链表为空时，返回 true
-   * 
-   */
+  /** 检查链表是否为空*/
   isEmpty() {
-
+    return this[length] === 0;
   }
 
-  /** 返回链表元素个数 
-   * @return {Number}
-   */
+  /** 返回链表元素个数*/
   size() {
-
+    return this[length];
   }
 
+  /** 获得头部节点*/
+  getHead() {
+    return this[head];
+  }
 }
 
-
-const chain = new LinkedList()
-chain.append(1)
-chain.append(2)
-chain.append(3)
-
-// chain.append({a: 123})
-log(chain.insert(0, 'x1'))
-log(chain.insert(2, 'x2'))
-log(chain.insert(4, 'x3'))
-// chain.removeAt(2)
-
-log(chain)
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export default LinkedList;
