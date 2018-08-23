@@ -46,7 +46,6 @@ class BinarySearchTree {
   inOrderTraverse(callback) {
     inOrderTraverseNode(this.root, callback);
 
-
     /** 中序遍历的核心代码 (通过递归，从小到大遍历二叉树)
      * @param {Object} node 节点
      * @param {Function} callback 定义对遍历到的每个节点要进行的操作(Visitor pattern)
@@ -67,7 +66,6 @@ class BinarySearchTree {
   */
   preOrderTraverse(callback) {
     preOrderTraverseNode(this.root, callback);
-
 
     /**
      * @api private
