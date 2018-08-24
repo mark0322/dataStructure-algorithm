@@ -64,7 +64,7 @@ class BinarySearchTree {
      * @api private
     */
     function inOrderTraverseNode(node, callback) {
-      if (node !== null) {
+      if (node) {
         inOrderTraverseNode(node.left, callback);
         callback(node.key);
         inOrderTraverseNode(node.right, callback);
@@ -80,7 +80,7 @@ class BinarySearchTree {
     preOrderTraverseNode(this[root], callback);
 
     function preOrderTraverseNode(node, callback) {
-      if (node !== null) {
+      if (node) {
         callback(node.key);
         preOrderTraverseNode(node.left, callback);
         preOrderTraverseNode(node.right, callback);
@@ -95,7 +95,7 @@ class BinarySearchTree {
     postOrderTraverseNode(this[root], callback);
 
     function postOrderTraverseNode(node, callback) {
-      if (node !== null) {
+      if (node) {
         postOrderTraverseNode(node.left, callback);
         postOrderTraverseNode(node.right, callback);
         callback(node.key);
