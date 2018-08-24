@@ -17,9 +17,11 @@ class Node {
   }
 }
 
+const root = Symbol('root');
+
 class BinarySearchTree {
   constructor() {
-    this.root = null;
+    this[root] = null;
   }
 
   /** 向二叉树中插入节点 
@@ -28,9 +30,9 @@ class BinarySearchTree {
   insert(key) {
     const newNode = new Node(key);
 
-    this.root
-      ? insertNode(this.root, newNode) // 根节点已存时
-      : this.root = newNode; // 根节点为空时
+    this[root]
+      ? insertNode(this[root], newNode) // 根节点已存时
+      : this[root] = newNode; // 根节点为空时
 
     /** 执行 插入节点 行为的私有函数 
      * @param {Object} node 二叉树中的节点
@@ -54,7 +56,7 @@ class BinarySearchTree {
    * @param {Function} callback 定义对遍历到的每个节点要进行的操作(Visitor pattern)
   */
   inOrderTraverse(callback) {
-    inOrderTraverseNode(this.root, callback);
+    inOrderTraverseNode(this[root], callback);
 
     /** 中序遍历的核心代码 (通过递归，从小到大遍历二叉树)
      * @param {Object} node 节点
@@ -75,11 +77,8 @@ class BinarySearchTree {
    * @param {Function} callback 定义对遍历到的每个节点要进行的操作(Visitor pattern)
   */
   preOrderTraverse(callback) {
-    preOrderTraverseNode(this.root, callback);
+    preOrderTraverseNode(this[root], callback);
 
-    /**
-     * @api private
-    */
     function preOrderTraverseNode(node, callback) {
       if (node !== null) {
         callback(node.key);
@@ -93,7 +92,7 @@ class BinarySearchTree {
    * @param {Function} callback 定义对遍历到的每个节点要进行的操作(Visitor pattern)
   */
   postOrderTraverse(callback) {
-    postOrderTraverseNode(this.root, callback);
+    postOrderTraverseNode(this[root], callback);
 
     function postOrderTraverseNode(node, callback) {
       if (node !== null) {
@@ -104,22 +103,18 @@ class BinarySearchTree {
     }
   }
 
-  /**
-   * @return {Number} 二叉树中的最大值
-  */
+  /** @return {Number} 二叉树中的最大值*/
   max() {
-    let node = this.root || {};
+    let node = this[root] || {};
     while (node.right) {
       node = node.right;
     }
     return node.key;
   }
 
-  /**
-   * @return {Number} 二叉树中的最小值
-  */
+  /** @return {Number} 二叉树中的最小值*/
   min() {
-    let node = this.root || {};
+    let node = this[root] || {};
     while (node.left) {
       node = node.left;
     }
@@ -131,7 +126,7 @@ class BinarySearchTree {
    * @return {Boolean}
   */
   search(key) {
-    return searchNode(this.root, key);
+    return searchNode(this[root], key);
 
     /**
      * @return {Boolean}

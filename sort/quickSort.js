@@ -22,3 +22,5 @@ function quickSort(arr = []) {
 
   return [...quickSort(left), midValue, ...quickSort(right)];
 }
+
+export default quickSort;
